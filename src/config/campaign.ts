@@ -1,0 +1,238 @@
+/**
+ * ============================================================================
+ *  CONFIGURAÇÃO CENTRAL DA CAMPANHA — Grupo VIP | Dr. André Menegat
+ * ============================================================================
+ *
+ *  Este é o ÚNICO arquivo que precisa ser editado para colocar a página no ar.
+ *  Todos os componentes, metadados de SEO, cores e o checklist de publicação
+ *  leem os valores daqui.
+ *
+ *  Regras:
+ *  - Campo vazio ("") significa "a definir". A página nunca inventa o conteúdo:
+ *    enquanto um campo estiver vazio, ela usa um texto neutro e o item aparece
+ *    no checklist de pré-visualização.
+ *  - Preencha somente com informações reais e verificadas.
+ *  - Depois de editar, recarregue a pré-visualização.
+ */
+export const CAMPAIGN: CampaignConfig = {
+  // ---------------------------------------------------------------------------
+  //  PROFISSIONAL
+  // ---------------------------------------------------------------------------
+  DOCTOR_NAME: "Dr. André Menegat",
+
+  /** Número do CRM, somente dígitos. Ex.: "123456" */
+  DOCTOR_CRM: "",
+  /** UF do CRM. Ex.: "SP" */
+  DOCTOR_CRM_UF: "",
+
+  /**
+   * Especialidade médica — preencha SOMENTE se for especialidade registrada no CRM.
+   * Se preencher, o RQE passa a ser obrigatório.
+   */
+  DOCTOR_SPECIALTY: "",
+  /** Número do RQE da especialidade acima, quando aplicável. */
+  DOCTOR_RQE: "",
+
+  /** Completa a frase "O Dr. André Menegat é médico e atua na área de ___." */
+  DOCTOR_PRACTICE_AREA: "",
+  /** Completa a frase "Seu trabalho é orientado por ___, valorizando a avaliação…" */
+  DOCTOR_DIFFERENTIALS: "",
+  /**
+   * Texto de apresentação completo (opcional). Se preenchido, substitui o
+   * texto-base montado com os dois campos acima. Um parágrafo por item.
+   */
+  DOCTOR_BIO: [],
+  /** Formação e experiência efetivamente comprovadas. Um item por linha. */
+  DOCTOR_EDUCATION: [],
+
+  /**
+   * Fotografia oficial do médico. Para trocar: substitua o arquivo em
+   * /brand-assets/dr-andre-menegat.jpg e rode `npm run images`, ou aponte
+   * `src` para outra imagem em /public/images (e esvazie `avif`/`webp`).
+   */
+  DOCTOR_PHOTO: {
+    src: "/images/dr-andre-menegat.jpg",
+    avif: "/images/dr-andre-menegat-480.avif 480w, /images/dr-andre-menegat-640.avif 640w, /images/dr-andre-menegat-807.avif 807w",
+    webp: "/images/dr-andre-menegat-480.webp 480w, /images/dr-andre-menegat-640.webp 640w, /images/dr-andre-menegat-807.webp 807w",
+    width: 807,
+    height: 1178,
+    alt: "Retrato do Dr. André Menegat, de terno escuro, sorrindo, em estúdio com fundo cinza.",
+  },
+  /** Segunda fotografia para a seção "Conheça". Deixe null para reutilizar a principal. */
+  DOCTOR_PHOTO_ABOUT: null,
+
+  // ---------------------------------------------------------------------------
+  //  MARCA
+  // ---------------------------------------------------------------------------
+  BRAND_LOGO: {
+    /** Logotipo completo para fundos claros. */
+    onLight: "/images/logo-dourado.webp",
+    /** Logotipo completo para fundos escuros. */
+    onDark: "/images/logo-champagne.webp",
+    /** Monograma "AM" usado no cabeçalho. */
+    monogram: "/images/logo-dourado-monograma.webp",
+    monogramOnDark: "/images/logo-champagne-monograma.webp",
+    alt: "Dr. André Menegat — Contorno Corporal",
+  },
+
+  /**
+   * Paleta PROVISÓRIA. Substitua pelos códigos oficiais da marca e marque
+   * BRAND_COLORS_ARE_OFFICIAL como true. Valores em hexadecimal.
+   */
+  BRAND_COLORS: {
+    ivory: "#F7F5F1", // off-white — fundo principal
+    graphite: "#252525", // grafite profundo — textos e botões
+    sand: "#E9E2D7", // bege sofisticado — fundos de apoio
+    gold: "#A88C65", // dourado fosco — detalhes, linhas e ícones
+    white: "#FFFFFF",
+    goldInk: "#6F5638", // dourado escurecido — textos pequenos em dourado (contraste AA)
+    muted: "#5C5852", // texto secundário
+    night: "#1C1C1C", // rodapé
+    champagne: "#D8C6A6", // dourado claro sobre fundos escuros
+  },
+  BRAND_COLORS_ARE_OFFICIAL: false,
+
+  // ---------------------------------------------------------------------------
+  //  CAMPANHA
+  // ---------------------------------------------------------------------------
+  /**
+   * Link oficial de convite do grupo. Formato: https://chat.whatsapp.com/XXXXXXXX
+   * Não adicione parâmetros de rastreamento. Todos os botões usam este link.
+   */
+  WHATSAPP_GROUP_URL: "",
+
+  /** Data de divulgação da condição especial. Formato: "AAAA-MM-DD". Ex.: "2026-11-27" */
+  OFFER_ANNOUNCEMENT_DATE: "",
+  /** Horário de divulgação (opcional). Formato: "HH:MM". Ex.: "19:00" */
+  OFFER_ANNOUNCEMENT_TIME: "",
+  /**
+   * Controle de exibição da data. Mesmo com a data preenchida, ela só aparece
+   * na página quando este campo for true (divulgação autorizada pela equipe).
+   */
+  SHOW_ANNOUNCEMENT_DATE: false,
+
+  /**
+   * Selo circular da campanha exibido sobre a fotografia do hero.
+   * Valide o uso com a revisão de conformidade antes de publicar.
+   */
+  CAMPAIGN_BADGE: {
+    show: true,
+    src: "/images/selo-grupo-vip.webp",
+    alt: "Selo Black Friday Exclusive — Grupo VIP Dr. André Menegat",
+  },
+
+  // ---------------------------------------------------------------------------
+  //  MENSURAÇÃO
+  // ---------------------------------------------------------------------------
+  /**
+   * ID do Pixel da Meta (15 ou 16 dígitos). O Pixel só é carregado depois que o
+   * visitante aceita os cookies de marketing. Veja o README.
+   */
+  META_PIXEL_ID: "",
+
+  // ---------------------------------------------------------------------------
+  //  CLÍNICA (preencha somente se a divulgação também for em nome de clínica)
+  // ---------------------------------------------------------------------------
+  CLINIC_CITY: "",
+  CLINIC_DETAILS: {
+    legalName: "", // razão social
+    cnpj: "",
+    address: "",
+    crmRegistration: "", // inscrição da clínica no CRM, quando aplicável
+    technicalDirectorName: "",
+    technicalDirectorCrm: "", // ex.: "CRM/SP 123456"
+    technicalDirectorRqe: "",
+  },
+
+  // ---------------------------------------------------------------------------
+  //  SITE, SEO E PRIVACIDADE
+  // ---------------------------------------------------------------------------
+  /** Endereço final da página, sem barra no fim. Ex.: "https://grupovip.drandremenegat.com.br" */
+  SITE_URL: "",
+  SEO_TITLE: "Grupo VIP | Dr. André Menegat",
+  SEO_DESCRIPTION:
+    "Entre no Grupo VIP do Dr. André Menegat e acompanhe a divulgação de uma condição especial para toxina botulínica.",
+  OG_IMAGE: { src: "/images/og-image.jpg", width: 1200, height: 630 },
+
+  /** Dados da Política de Privacidade (LGPD). */
+  PRIVACY: {
+    controllerName: "", // nome ou razão social do controlador dos dados
+    controllerDocument: "", // CPF/CNPJ do controlador
+    controllerAddress: "",
+    contactEmail: "", // canal para o titular exercer seus direitos
+    dpoName: "", // encarregado pelo tratamento de dados (DPO)
+    dpoContact: "",
+    lastUpdated: "", // "AAAA-MM-DD"
+    /** Marque true somente após revisão jurídica do texto da política. */
+    legallyReviewed: false,
+  },
+
+  /**
+   * Marque true somente após a revisão final de conformidade (CFM, LGPD e
+   * políticas da Meta) feita pelo responsável pela campanha.
+   */
+  COMPLIANCE_REVIEWED: false,
+};
+
+// ---------------------------------------------------------------------------
+//  Tipos (não é necessário editar abaixo desta linha)
+// ---------------------------------------------------------------------------
+export interface Photo {
+  src: string;
+  avif?: string;
+  webp?: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+export interface CampaignConfig {
+  DOCTOR_NAME: string;
+  DOCTOR_CRM: string;
+  DOCTOR_CRM_UF: string;
+  DOCTOR_SPECIALTY: string;
+  DOCTOR_RQE: string;
+  DOCTOR_PRACTICE_AREA: string;
+  DOCTOR_DIFFERENTIALS: string;
+  DOCTOR_BIO: string[];
+  DOCTOR_EDUCATION: string[];
+  DOCTOR_PHOTO: Photo;
+  DOCTOR_PHOTO_ABOUT: Photo | null;
+  BRAND_LOGO: { onLight: string; onDark: string; monogram: string; monogramOnDark: string; alt: string };
+  BRAND_COLORS: Record<
+    "ivory" | "graphite" | "sand" | "gold" | "white" | "goldInk" | "muted" | "night" | "champagne",
+    string
+  >;
+  BRAND_COLORS_ARE_OFFICIAL: boolean;
+  WHATSAPP_GROUP_URL: string;
+  OFFER_ANNOUNCEMENT_DATE: string;
+  OFFER_ANNOUNCEMENT_TIME: string;
+  SHOW_ANNOUNCEMENT_DATE: boolean;
+  CAMPAIGN_BADGE: { show: boolean; src: string; alt: string };
+  META_PIXEL_ID: string;
+  CLINIC_CITY: string;
+  CLINIC_DETAILS: {
+    legalName: string;
+    cnpj: string;
+    address: string;
+    crmRegistration: string;
+    technicalDirectorName: string;
+    technicalDirectorCrm: string;
+    technicalDirectorRqe: string;
+  };
+  SITE_URL: string;
+  SEO_TITLE: string;
+  SEO_DESCRIPTION: string;
+  OG_IMAGE: { src: string; width: number; height: number };
+  PRIVACY: {
+    controllerName: string;
+    controllerDocument: string;
+    controllerAddress: string;
+    contactEmail: string;
+    dpoName: string;
+    dpoContact: string;
+    lastUpdated: string;
+    legallyReviewed: boolean;
+  };
+  COMPLIANCE_REVIEWED: boolean;
+}
