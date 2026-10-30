@@ -148,7 +148,7 @@ export const CAMPAIGN: CampaignConfig = {
   //  SITE, SEO E PRIVACIDADE
   // ---------------------------------------------------------------------------
   /** Endereço final da página, sem barra no fim. Ex.: "https://grupovip.drandremenegat.com.br" */
-  SITE_URL: "",
+  SITE_URL: "https://drandremenegat.vercel.app",
   SEO_TITLE: "Grupo VIP | Dr. André Menegat",
   SEO_DESCRIPTION:
     "Entre no Grupo VIP do Dr. André Menegat e acompanhe a divulgação de uma condição especial para toxina botulínica.",
