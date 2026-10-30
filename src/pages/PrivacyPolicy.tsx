@@ -51,6 +51,13 @@ export function PrivacyPolicy() {
   const { openPreferences } = useConsent();
   const p = CAMPAIGN.PRIVACY;
   const updated = formatUpdated(p.lastUpdated);
+  const contactEmail = filled(p.contactEmail) ? (
+    <a href={`mailto:${p.contactEmail.trim()}`} className="text-graphite underline underline-offset-4 break-all">
+      {p.contactEmail.trim()}
+    </a>
+  ) : (
+    valueOr(p.contactEmail, "e-mail de contato")
+  );
 
   return (
     <>
@@ -79,8 +86,7 @@ export function PrivacyPolicy() {
         {!p.legallyReviewed && (
           <div role="note" className="mt-8 border border-dashed border-gold bg-sand/50 p-5 text-[0.9375rem] leading-relaxed text-graphite">
             <strong className="font-semibold">Minuta em elaboração.</strong> Este texto é um modelo inicial e ainda não passou
-            por revisão jurídica. Os dados do controlador devem ser preenchidos e o documento validado antes da publicação da
-            página.
+            por revisão jurídica. O documento deve ser validado antes da publicação da página.
           </div>
         )}
 
@@ -92,11 +98,11 @@ export function PrivacyPolicy() {
               {valueOr(p.controllerDocument, "CPF/CNPJ")}
               {filled(p.controllerAddress) ? <>, com endereço em {p.controllerAddress}</> : null}.
             </p>
-            <p>Contato para assuntos de privacidade: {valueOr(p.contactEmail, "e-mail de contato")}.</p>
+            <p>Contato para assuntos de privacidade: {contactEmail}.</p>
             {(filled(p.dpoName) || IS_PREVIEW) && (
               <p>
                 Encarregado pelo tratamento de dados (DPO): {valueOr(p.dpoName, "nome do encarregado")}
-                {filled(p.dpoContact) ? ` — ${p.dpoContact}` : ""}.
+                {filled(p.dpoContact) ? ` — ${p.dpoContact}` : filled(p.contactEmail) ? ", pelo mesmo e-mail de contato" : ""}.
               </p>
             )}
           </Section>
@@ -226,7 +232,7 @@ export function PrivacyPolicy() {
               <li>revogação do consentimento.</li>
             </ul>
             <p>
-              Para exercer seus direitos, entre em contato pelo e-mail {valueOr(p.contactEmail, "e-mail de contato")}. Você
+              Para exercer seus direitos, entre em contato pelo e-mail {contactEmail}. Você
               também pode apresentar reclamação à Autoridade Nacional de Proteção de Dados (ANPD).
             </p>
           </Section>

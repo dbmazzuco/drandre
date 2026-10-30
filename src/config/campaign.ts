@@ -177,10 +177,10 @@ export const CAMPAIGN: CampaignConfig = {
     controllerName: "Clínica Médica Pieri e Menegat Ltda", // nome ou razão social do controlador dos dados
     controllerDocument: "CNPJ 33.261.414/0001-23", // ex.: "CNPJ 00.000.000/0001-00"
     controllerAddress: "Rua Miguel Couto, 520, Centro, Orleans (SC), CEP 88870-000",
-    contactEmail: "", // canal para o titular exercer seus direitos
-    dpoName: "", // encarregado pelo tratamento de dados (DPO)
-    dpoContact: "",
-    lastUpdated: "", // "AAAA-MM-DD"
+    contactEmail: "carolpizzolatti@hotmail.com", // canal para o titular exercer seus direitos
+    dpoName: "André Roberto Menegat", // encarregado pelo tratamento de dados (DPO)
+    dpoContact: "", // vazio = atende pelo e-mail de contato acima
+    lastUpdated: "2026-10-30", // "AAAA-MM-DD"
     /** Marque true somente após revisão jurídica do texto da política. */
     legallyReviewed: false,
   },
