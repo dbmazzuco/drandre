@@ -43,7 +43,8 @@ o conteúdo e o item aparece no checklist.
 | `OFFER_ANNOUNCEMENT_DATE` / `_TIME` | Data (`AAAA-MM-DD`) e horário (`HH:MM`) da divulgação. |
 | `SHOW_ANNOUNCEMENT_DATE` | Controle de exibição: a data só aparece quando `true` (divulgação autorizada). |
 | `CAMPAIGN_BADGE` | Selo circular sobre a foto do hero (`show: false` para ocultar). |
-| `META_PIXEL_ID` | ID do Pixel (15–16 dígitos). |
+| `META_PIXEL_ID` | ID do Pixel (15–16 dígitos), se o Pixel for instalado direto na página. |
+| `GTM_ID` | ID do contêiner do Google Tag Manager (`GTM-XXXXXXX`). |
 | `CLINIC_CITY`, `CLINIC_DETAILS` | Dados da clínica e do diretor técnico, se a divulgação também for em nome da clínica. |
 | `SITE_URL` | Endereço final (necessário para a imagem de compartilhamento funcionar no Facebook/WhatsApp). |
 | `PRIVACY` | Dados do controlador para a Política de Privacidade. |
@@ -77,15 +78,39 @@ Todos os CTAs usam o componente `src/components/WhatsAppButton.tsx` e o mesmo de
 cabeçalho, hero, "Como funciona", CTA final e botão fixo no celular. O link abre em nova aba com
 `rel="noopener noreferrer"`. Sem link configurado, o clique mostra apenas um aviso para o administrador.
 
-## Pixel da Meta e consentimento (LGPD)
+## Mensuração e consentimento (LGPD)
 
-Implementação em `src/lib/metaPixel.ts` e `src/lib/consent.tsx`.
+Implementação em `src/lib/tracking.ts` (ponto único), `src/lib/metaPixel.ts`, `src/lib/gtm.ts` e
+`src/lib/consent.tsx`.
 
-- O Pixel **só é carregado** com `META_PIXEL_ID` válido **e** depois que o visitante aceita os cookies de marketing.
-  Antes disso, nenhum script da Meta é baixado.
-- O aviso de cookies só aparece quando há Pixel configurado. Aceitar e rejeitar têm o mesmo peso visual, e o link
-  "Configurações de cookies" no rodapé permite mudar a escolha a qualquer momento. Ao revogar, o Pixel recebe
-  `consent revoke` e os cookies `_fbp`/`_fbc` são apagados.
+- O Pixel e o Google Tag Manager **só são carregados** com ID válido **e** depois que o visitante aceita os cookies de
+  marketing e medição. Antes disso, nenhum script da Meta ou do Google é baixado.
+- O aviso de cookies só aparece quando há alguma dessas ferramentas configurada. Aceitar e rejeitar têm o mesmo peso
+  visual, e o link "Configurações de cookies" no rodapé permite mudar a escolha a qualquer momento. Ao revogar, o Pixel
+  recebe `consent revoke`, o GTM recebe o Consent Mode como `denied` e os cookies `_fbp`, `_fbc`, `_ga*` e `_gcl_*` são
+  apagados.
+
+### Google Tag Manager
+
+O contêiner (`GTM_ID`) é carregado com o snippet padrão do GTM somente após o aceite, já com o Consent Mode v2
+informado como concedido. A página envia ao `dataLayer`:
+
+- `group_link_click` — a cada clique em qualquer botão do grupo, **sem parâmetros**. No GTM, crie um acionador do tipo
+  *Evento personalizado* com esse nome e use-o nas tags de conversão (ex.: evento `GroupLinkClick` do Pixel da Meta).
+  Mede **intenção** de entrar no grupo, não entrada confirmada.
+- `consent_revoked` — quando o visitante retira o consentimento.
+
+Ao configurar o contêiner:
+
+1. Se o Pixel da Meta estiver no GTM, deixe `META_PIXEL_ID` **vazio** para não duplicar eventos.
+2. Na tag do Pixel, desative a coleta automática (`fbq('set', 'autoConfig', false, 'ID')` antes do `init`) e a
+   correspondência avançada automática no Events Manager — os textos da página mencionam o procedimento.
+3. Não envie parâmetros com dados pessoais, de saúde ou nomes de procedimentos.
+4. Teste no modo **Visualizar** do GTM: sem aceitar os cookies, o contêiner não deve carregar; após aceitar, as tags
+   disparam e o clique gera `group_link_click`.
+
+### Pixel da Meta direto (alternativa ao GTM)
+
 - Eventos enviados:
   - `PageView` — uma vez por carregamento.
   - `GroupLinkClick` — evento personalizado, **sem parâmetros**, a cada clique em qualquer botão do grupo (cliques
@@ -94,7 +119,7 @@ Implementação em `src/lib/metaPixel.ts` e `src/lib/consent.tsx`.
 - `autoConfig` fica desativado: o Pixel não coleta textos de botões nem metadados da página (que mencionam o
   procedimento). Os eventos automáticos de troca de rota também ficam desligados.
 
-### Como ativar
+Para ativar:
 
 1. Copie o ID do Pixel no Meta Events Manager e cole em `META_PIXEL_ID`.
 2. No Events Manager, deixe **desativada** a correspondência avançada automática (Automatic Advanced Matching).
@@ -109,7 +134,7 @@ src/
   config/      campaign.ts (edite aqui), rules.ts (validações), checklist.ts (pendências de publicação)
   sections/    Header, Hero, Benefits, About, HowItWorks, Faq, FinalCta, Footer
   components/  WhatsAppButton, CookieConsent, AdminNotice, StickyMobileCta, Logo, DoctorPhoto, ícones…
-  lib/         consent, metaPixel, announcement (data), router (2 rotas, sem dependências), content
+  lib/         consent, tracking, metaPixel, gtm, announcement (data), router (2 rotas, sem dependências), content
   pages/       Index, PrivacyPolicy, NotFound
 brand-assets/  arquivos originais da marca
 scripts/       process-images.mjs

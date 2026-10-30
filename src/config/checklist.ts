@@ -6,6 +6,7 @@ import { CAMPAIGN } from "./campaign";
 import {
   filled,
   hasSpecialty,
+  isGtmIdValid,
   isMetaPixelIdValid,
   isValidIsoDate,
   isValidTime,
@@ -52,13 +53,11 @@ export function getPublishChecklist(): ChecklistItem[] {
     },
     {
       id: "rqe",
-      label: hasSpecialty ? "RQE da especialidade informada" : "Especialidade registrada (se houver) e RQE",
+      label: hasSpecialty ? "RQE da especialidade informada" : "Especialidade (nenhuma divulgada nesta campanha)",
       field: "DOCTOR_SPECIALTY, DOCTOR_RQE",
       level: hasSpecialty ? "blocker" : "recommended",
-      done: hasSpecialty ? filled(c.DOCTOR_RQE) : false,
-      hint: hasSpecialty
-        ? "Especialidade só pode ser divulgada com o RQE correspondente."
-        : "Deixe em branco se não houver especialidade registrada a divulgar.",
+      done: hasSpecialty ? filled(c.DOCTOR_RQE) : true,
+      hint: "Especialidade só pode ser divulgada com o RQE correspondente.",
     },
     {
       id: "bio",
@@ -76,14 +75,17 @@ export function getPublishChecklist(): ChecklistItem[] {
       done: c.DOCTOR_EDUCATION.length > 0,
     },
     {
-      id: "pixel",
-      label: "ID do Pixel da Meta",
-      field: "META_PIXEL_ID",
+      id: "tracking",
+      label: "Mensuração: Pixel da Meta ou Google Tag Manager",
+      field: "META_PIXEL_ID ou GTM_ID",
       level: "blocker",
-      done: isMetaPixelIdValid,
-      hint: filled(c.META_PIXEL_ID)
-        ? "O ID deve ter 15 ou 16 dígitos."
-        : "Depois de configurar, valide PageView e GroupLinkClick no Events Manager.",
+      done: isMetaPixelIdValid || isGtmIdValid,
+      hint:
+        filled(c.META_PIXEL_ID) && !isMetaPixelIdValid
+          ? "O ID do Pixel deve ter 15 ou 16 dígitos."
+          : filled(c.GTM_ID) && !isGtmIdValid
+            ? "O ID do GTM deve ter o formato GTM-XXXXXXX."
+            : "Depois de configurar, valide os eventos no Events Manager / no modo de visualização do GTM.",
     },
     {
       id: "privacy-controller",
@@ -106,9 +108,12 @@ export function getPublishChecklist(): ChecklistItem[] {
       field: "COMPLIANCE_REVIEWED",
       level: "blocker",
       done: c.COMPLIANCE_REVIEWED,
-      hint: c.CAMPAIGN_BADGE.show
-        ? "Inclui validar o uso do selo “Black Friday” na fotografia do hero."
-        : undefined,
+      hint: [
+        c.CAMPAIGN_BADGE.show && "Inclui validar o uso do selo “Black Friday” na fotografia do hero.",
+        isGtmIdValid && "Revise as tags do contêiner do GTM: consentimento, nenhum dado de saúde e sem Pixel duplicado.",
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined,
     },
     {
       id: "site-url",
@@ -139,6 +144,17 @@ export function getPublishChecklist(): ChecklistItem[] {
           : "Enquanto vazia, a página informa que a data será anunciada pela equipe.",
     },
   ];
+
+  if (isMetaPixelIdValid && isGtmIdValid) {
+    items.push({
+      id: "tracking-duplicate",
+      label: "Pixel da Meta configurado direto e também pelo GTM",
+      field: "META_PIXEL_ID, GTM_ID",
+      level: "recommended",
+      done: false,
+      hint: "Se o contêiner do GTM já tiver o Pixel, deixe META_PIXEL_ID vazio para não duplicar eventos.",
+    });
+  }
 
   if (clinicStarted) {
     items.push({

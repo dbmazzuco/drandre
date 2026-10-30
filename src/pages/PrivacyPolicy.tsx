@@ -3,7 +3,7 @@ import { ArrowLeftIcon } from "@/components/icons";
 import { LogoLockup } from "@/components/Logo";
 import { CAMPAIGN } from "@/config/campaign";
 import { IS_PREVIEW } from "@/config/checklist";
-import { filled, isValidIsoDate } from "@/config/rules";
+import { filled, isGtmIdValid, isValidIsoDate } from "@/config/rules";
 import { useConsent } from "@/lib/consent";
 import { valueOr } from "@/lib/content";
 import { Link, ROUTES } from "@/lib/router";
@@ -30,6 +30,17 @@ const COOKIES = [
   { name: "dam.cookie-consent", provider: "Esta página (armazenamento local)", category: "Essencial", purpose: "Registrar a sua escolha sobre cookies.", duration: "Até ser apagado no navegador" },
   { name: "_fbp", provider: "Meta", category: "Marketing", purpose: "Identificar o navegador para medir o desempenho dos anúncios.", duration: "90 dias" },
   { name: "_fbc", provider: "Meta", category: "Marketing", purpose: "Associar a visita ao clique em um anúncio.", duration: "90 dias" },
+  ...(isGtmIdValid
+    ? [
+        {
+          name: "_ga, _ga_*, _gcl_au",
+          provider: "Google (via Google Tag Manager)",
+          category: "Marketing e medição",
+          purpose: "Medir visitas e conversões dos anúncios, conforme as ferramentas configuradas no Tag Manager.",
+          duration: "Até 2 anos, conforme a ferramenta",
+        },
+      ]
+    : []),
 ];
 
 /**
@@ -77,7 +88,7 @@ export function PrivacyPolicy() {
           <Section title="1. Quem é o responsável pelos seus dados">
             <p>
               O controlador dos dados pessoais tratados nesta página é{" "}
-              <strong>{valueOr(p.controllerName, "nome ou razão social do controlador")}</strong>, inscrito(a) sob o nº{" "}
+              <strong>{valueOr(p.controllerName, "nome ou razão social do controlador")}</strong>,{" "}
               {valueOr(p.controllerDocument, "CPF/CNPJ")}
               {filled(p.controllerAddress) ? <>, com endereço em {p.controllerAddress}</> : null}.
             </p>
@@ -101,9 +112,9 @@ export function PrivacyPolicy() {
                 <strong>Registro da sua escolha sobre cookies</strong>, armazenado no seu próprio navegador.
               </li>
               <li>
-                <strong>Somente com o seu consentimento:</strong> cookies e identificadores do Pixel da Meta, que registram a
-                visualização da página e o clique no botão de acesso ao grupo VIP. Esses eventos não incluem dados de saúde
-                nem o nome de procedimentos.
+                <strong>Somente com o seu consentimento:</strong> cookies e identificadores de ferramentas de marketing e
+                medição (Pixel da Meta e Google Tag Manager), que registram a visualização da página e o clique no botão de
+                acesso ao grupo VIP. Esses eventos não incluem dados de saúde nem o nome de procedimentos.
               </li>
             </ul>
             <p>
@@ -124,7 +135,7 @@ export function PrivacyPolicy() {
                 (art. 7º, II e IX, da LGPD).
               </li>
               <li>
-                <strong>Medição do desempenho dos anúncios (Pixel da Meta):</strong> consentimento (art. 7º, I, da LGPD),
+                <strong>Medição do desempenho dos anúncios (Meta e Google):</strong> consentimento (art. 7º, I, da LGPD),
                 que pode ser revogado a qualquer momento.
               </li>
               <li>
@@ -137,7 +148,8 @@ export function PrivacyPolicy() {
           <Section title="4. Com quem compartilhamos">
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <strong>Meta Platforms</strong> (Facebook e Instagram), somente se você autorizar os cookies de marketing.
+                <strong>Meta Platforms</strong> (Facebook e Instagram) e <strong>Google</strong>, somente se você autorizar
+                os cookies de marketing e medição.
               </li>
               <li>
                 <strong>WhatsApp</strong>, quando você opta por acessar o grupo.
@@ -155,7 +167,7 @@ export function PrivacyPolicy() {
 
           <Section title="5. Cookies e tecnologias semelhantes">
             <p>
-              Os cookies de marketing ficam desativados até que você os aceite. Você pode mudar sua escolha quando quiser:
+              Os cookies de marketing e medição ficam desativados até que você os aceite. Você pode mudar sua escolha quando quiser:
             </p>
             <p>
               <button
@@ -196,7 +208,7 @@ export function PrivacyPolicy() {
           <Section title="6. Por quanto tempo mantemos os dados">
             <p>
               O registro da sua escolha sobre cookies permanece no seu navegador até ser apagado por você. Os dados coletados
-              pela Meta seguem os prazos definidos pela própria Meta. Os registros técnicos de acesso são mantidos pelo
+              pela Meta e pelo Google seguem os prazos definidos por cada empresa. Os registros técnicos de acesso são mantidos pelo
               período necessário à segurança da página e ao cumprimento de obrigações legais.
             </p>
           </Section>

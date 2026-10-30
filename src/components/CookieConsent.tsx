@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { isMetaPixelIdValid } from "@/config/rules";
+import { hasMarketingTools, isGtmIdValid, isMetaPixelIdValid } from "@/config/rules";
 import { useConsent } from "@/lib/consent";
 import { Link, ROUTES } from "@/lib/router";
 import { CloseIcon } from "./icons";
@@ -20,8 +20,8 @@ export function CookieBanner() {
     <div role="region" aria-label="Aviso de cookies" className="fixed inset-x-0 bottom-0 z-50 px-2 pb-safe sm:px-5 sm:pb-5">
       <div className="mx-auto max-w-4xl border border-graphite/10 bg-white px-4 py-3.5 shadow-[0_24px_60px_-24px_rgb(0_0_0/0.4)] sm:flex sm:items-center sm:gap-8 sm:p-6">
         <p className="text-[0.875rem] leading-snug text-muted sm:text-[0.9375rem] sm:leading-relaxed">
-          Usamos cookies essenciais e, somente com a sua autorização, cookies de marketing da Meta para medir o desempenho
-          dos anúncios.{" "}
+          Usamos cookies essenciais e, somente com a sua autorização, cookies de marketing e medição para avaliar o
+          desempenho dos anúncios.{" "}
           <Link to={ROUTES.privacy} className="text-graphite underline underline-offset-4">
             Saiba mais
           </Link>
@@ -131,14 +131,16 @@ export function CookiePreferences() {
           <div className="py-5">
             <div className="flex items-center justify-between gap-6">
               <h3 id="cookie-marketing-label" className="font-sans text-[0.9375rem] font-semibold">
-                Marketing (Pixel da Meta)
+                Marketing e medição
               </h3>
               <Switch checked={draft} onChange={setDraft} labelledBy="cookie-marketing-label" />
             </div>
             <p className="mt-2 text-[0.875rem] leading-relaxed text-muted">
-              Medem visitas à página e cliques no botão do grupo VIP para avaliar o desempenho dos anúncios no Facebook e no
-              Instagram. Não enviam nome, telefone, e-mail ou informações de saúde.
-              {!isMetaPixelIdValid && " No momento, nenhuma ferramenta de marketing está ativa nesta página."}
+              Medem visitas à página e cliques no botão do grupo VIP para avaliar o desempenho dos anúncios. Não enviam nome,
+              telefone, e-mail ou informações de saúde.
+              {hasMarketingTools
+                ? ` Ferramentas: ${[isMetaPixelIdValid && "Pixel da Meta", isGtmIdValid && "Google Tag Manager e as ferramentas de anúncios e análise configuradas nele"].filter(Boolean).join("; ")}.`
+                : " No momento, nenhuma ferramenta de marketing está ativa nesta página."}
             </p>
           </div>
         </div>

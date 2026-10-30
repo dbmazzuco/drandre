@@ -6,24 +6,30 @@ botão "Ver checklist" do aviso de pré-visualização e como alerta no `npm run
 
 ## Obrigatórios
 
-- [ ] **Link do grupo** — `WHATSAPP_GROUP_URL` com o convite oficial (`https://chat.whatsapp.com/...`). Testar o clique
-      no Android, no iOS e no desktop, inclusive dentro do navegador do Instagram e do Facebook.
-- [ ] **CRM e UF** — `DOCTOR_CRM`, `DOCTOR_CRM_UF`, conferidos no portal do CFM.
-- [ ] **Especialidade e RQE** — só se houver especialidade registrada a divulgar (`DOCTOR_SPECIALTY` + `DOCTOR_RQE`).
-- [ ] **Pixel da Meta** — `META_PIXEL_ID` configurado e eventos validados (ver README).
-- [ ] **Política de Privacidade** — `PRIVACY.controllerName`, `controllerDocument`, `contactEmail` (e encarregado, se
-      houver) preenchidos; texto revisado por assessoria jurídica e `PRIVACY.legallyReviewed: true`.
-- [ ] **Clínica** — se a divulgação também for em nome de pessoa jurídica, preencher `CLINIC_DETAILS` (razão social,
-      CNPJ, inscrição no CRM e diretor técnico com CRM/RQE).
+- [x] **Link do grupo** — `WHATSAPP_GROUP_URL` configurado. Falta testar o clique no Android, no iOS e no desktop,
+      inclusive dentro do navegador do Instagram e do Facebook.
+- [x] **CRM e UF** — CRM/SC 13389, conferido no portal do CFM em 30/10/2026 (situação regular).
+- [x] **Especialidade e RQE** — a única especialidade registrada é Medicina do Trabalho (RQE 21082), não divulgada nesta
+      campanha. Não usar "especialista em minilipo" ou "em contorno corporal": não são especialidades registradas.
+- [x] **Mensuração** — Google Tag Manager `GTM-K94HHX9M` configurado. Falta revisar as tags do contêiner e validar no
+      modo Visualizar (ver README).
+- [ ] **Política de Privacidade** — controlador preenchido (Clínica Médica Pieri e Menegat Ltda). Falta o **e-mail de
+      contato** para os titulares (`PRIVACY.contactEmail`), a revisão jurídica e `PRIVACY.legallyReviewed: true`.
+- [ ] **Clínica** — a página está em nome do médico, então `CLINIC_DETAILS` ficou vazio. Se a divulgação também for em
+      nome da clínica, preencher razão social, CNPJ, inscrição no CRM e diretor técnico. Atenção: em 30/10/2026 o
+      cadastro da clínica no CRM-SC (nº 6042) aparecia com outro nome ("Clínica Médica Corrêa e Menegat Ltda"), outro
+      diretor técnico e certificado de regularidade vencido desde 24/06/2020 — regularizar antes de usar o nome da
+      clínica em anúncios.
 - [ ] **Revisão de conformidade** — revisão final pelo responsável pela campanha (Resolução CFM nº 2.336/2023, LGPD e
       políticas de publicidade da Meta) e `COMPLIANCE_REVIEWED: true`.
 
 ## Recomendados
 
-- [ ] `DOCTOR_PRACTICE_AREA` e `DOCTOR_DIFFERENTIALS` (ou `DOCTOR_BIO`) com informações reais e verificáveis.
-- [ ] `DOCTOR_EDUCATION` com formação e experiência comprovadas.
-- [ ] `SITE_URL` com o domínio final (para a imagem de compartilhamento aparecer no WhatsApp/Facebook). Depois de
-      publicar, conferir no Depurador de Compartilhamento da Meta.
+- [x] `DOCTOR_BIO` e `DOCTOR_EDUCATION` com dados verificados (CFM e perfil oficial). Números de atendimentos, tempo
+      de experiência em procedimentos, depoimentos e fotos de antes e depois **não** foram usados: só incluir dados
+      comprovados e após a revisão de conformidade.
+- [x] `SITE_URL` com o domínio da Vercel. Trocar se houver domínio próprio e conferir no Depurador de Compartilhamento
+      da Meta.
 - [ ] Paleta oficial em `BRAND_COLORS` e `BRAND_COLORS_ARE_OFFICIAL: true`.
 - [ ] Data de divulgação (`OFFER_ANNOUNCEMENT_DATE`, `OFFER_ANNOUNCEMENT_TIME`) e `SHOW_ANNOUNCEMENT_DATE: true`
       somente quando a equipe autorizar a divulgação.

@@ -1,14 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { isMetaPixelIdValid } from "@/config/rules";
-import { grantMetaPixel, revokeMetaPixel } from "@/lib/metaPixel";
+import { hasMarketingTools } from "@/config/rules";
+import { grantMarketing, revokeMarketing } from "@/lib/tracking";
 
 /**
  * Consentimento de cookies (LGPD).
  * - Essenciais: apenas o registro desta escolha (localStorage). Sempre ativos.
- * - Marketing: Pixel da Meta. Desativado até o visitante aceitar.
+ * - Marketing e medição: Pixel da Meta e Google Tag Manager. Desativados até o visitante aceitar.
  */
 const STORAGE_KEY = "dam.cookie-consent";
-const CONSENT_VERSION = 1;
+// Versão 2: a categoria de marketing passou a incluir o Google Tag Manager.
+const CONSENT_VERSION = 2;
 
 interface StoredConsent {
   version: number;
@@ -62,10 +63,10 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (marketing) {
-      grantMetaPixel();
+      grantMarketing();
       wasGranted.current = true;
     } else if (wasGranted.current) {
-      revokeMetaPixel();
+      revokeMarketing();
       wasGranted.current = false;
     }
   }, [marketing]);
@@ -82,7 +83,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
     () => ({
       decided,
       marketing,
-      bannerVisible: (!decided && isMetaPixelIdValid) || forceBanner,
+      bannerVisible: (!decided && hasMarketingTools) || forceBanner,
       preferencesOpen,
       acceptAll: () => save(true),
       rejectAll: () => save(false),

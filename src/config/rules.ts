@@ -6,6 +6,7 @@ import { CAMPAIGN } from "./campaign";
 
 const WHATSAPP_INVITE = /^https:\/\/chat\.whatsapp\.com\/(?:invite\/)?[A-Za-z0-9]{10,40}(?:\?[\w=&.-]*)?$/;
 const META_PIXEL = /^\d{15,16}$/;
+const GTM = /^GTM-[A-Z0-9]{4,12}$/;
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 const TIME = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -16,6 +17,12 @@ export const isWhatsappGroupUrlValid = WHATSAPP_INVITE.test(whatsappGroupUrl);
 
 export const metaPixelId = CAMPAIGN.META_PIXEL_ID.trim();
 export const isMetaPixelIdValid = META_PIXEL.test(metaPixelId);
+
+export const gtmId = CAMPAIGN.GTM_ID.trim().toUpperCase();
+export const isGtmIdValid = GTM.test(gtmId);
+
+/** Há alguma ferramenta de marketing/medição que dependa de consentimento? */
+export const hasMarketingTools = isMetaPixelIdValid || isGtmIdValid;
 
 export function isValidIsoDate(value: string): boolean {
   const match = ISO_DATE.exec(value.trim());

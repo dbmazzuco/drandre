@@ -21,13 +21,17 @@ export const CAMPAIGN: CampaignConfig = {
   DOCTOR_NAME: "Dr. André Menegat",
 
   /** Número do CRM, somente dígitos. Ex.: "123456" */
-  DOCTOR_CRM: "",
+  DOCTOR_CRM: "13389",
   /** UF do CRM. Ex.: "SP" */
-  DOCTOR_CRM_UF: "",
+  DOCTOR_CRM_UF: "SC",
 
   /**
    * Especialidade médica — preencha SOMENTE se for especialidade registrada no CRM.
    * Se preencher, o RQE passa a ser obrigatório.
+   *
+   * Consulta ao CFM (30/10/2026): a única especialidade registrada é Medicina do
+   * Trabalho (RQE 21082). Ela não é divulgada nesta campanha por não ter relação
+   * com o procedimento. "Contorno corporal" e "minilipo" NÃO são especialidades.
    */
   DOCTOR_SPECIALTY: "",
   /** Número do RQE da especialidade acima, quando aplicável. */
@@ -41,9 +45,15 @@ export const CAMPAIGN: CampaignConfig = {
    * Texto de apresentação completo (opcional). Se preenchido, substitui o
    * texto-base montado com os dois campos acima. Um parágrafo por item.
    */
-  DOCTOR_BIO: [],
+  DOCTOR_BIO: [
+    "O Dr. André Menegat é médico, atua na área de contorno corporal e realiza atendimentos em Orleans (SC).",
+    "Seu trabalho valoriza a avaliação individualizada e o cuidado com cada paciente.",
+  ],
   /** Formação e experiência efetivamente comprovadas. Um item por linha. */
-  DOCTOR_EDUCATION: [],
+  DOCTOR_EDUCATION: [
+    "Graduação em Medicina pela Universidade do Extremo Sul Catarinense (UNESC), 2006",
+    "Inscrito no CRM-SC desde 2006",
+  ],
 
   /**
    * Fotografia oficial do médico. Para trocar: substitua o arquivo em
@@ -99,7 +109,7 @@ export const CAMPAIGN: CampaignConfig = {
    * Link oficial de convite do grupo. Formato: https://chat.whatsapp.com/XXXXXXXX
    * Não adicione parâmetros de rastreamento. Todos os botões usam este link.
    */
-  WHATSAPP_GROUP_URL: "",
+  WHATSAPP_GROUP_URL: "https://chat.whatsapp.com/Je8i3OZbYLh00AJuBGpL2s",
 
   /** Data de divulgação da condição especial. Formato: "AAAA-MM-DD". Ex.: "2026-11-27" */
   OFFER_ANNOUNCEMENT_DATE: "",
@@ -130,10 +140,18 @@ export const CAMPAIGN: CampaignConfig = {
    */
   META_PIXEL_ID: "",
 
+  /**
+   * ID do contêiner do Google Tag Manager (formato "GTM-XXXXXXX"). Assim como o
+   * Pixel, o GTM só é carregado depois do aceite dos cookies de marketing.
+   * Se o Pixel da Meta estiver dentro do GTM, deixe META_PIXEL_ID vazio para não
+   * duplicar eventos. Veja o README.
+   */
+  GTM_ID: "GTM-K94HHX9M",
+
   // ---------------------------------------------------------------------------
   //  CLÍNICA (preencha somente se a divulgação também for em nome de clínica)
   // ---------------------------------------------------------------------------
-  CLINIC_CITY: "",
+  CLINIC_CITY: "Orleans (SC)",
   CLINIC_DETAILS: {
     legalName: "", // razão social
     cnpj: "",
@@ -156,9 +174,9 @@ export const CAMPAIGN: CampaignConfig = {
 
   /** Dados da Política de Privacidade (LGPD). */
   PRIVACY: {
-    controllerName: "", // nome ou razão social do controlador dos dados
-    controllerDocument: "", // CPF/CNPJ do controlador
-    controllerAddress: "",
+    controllerName: "Clínica Médica Pieri e Menegat Ltda", // nome ou razão social do controlador dos dados
+    controllerDocument: "CNPJ 33.261.414/0001-23", // ex.: "CNPJ 00.000.000/0001-00"
+    controllerAddress: "Rua Miguel Couto, 520, Centro, Orleans (SC), CEP 88870-000",
     contactEmail: "", // canal para o titular exercer seus direitos
     dpoName: "", // encarregado pelo tratamento de dados (DPO)
     dpoContact: "",
@@ -210,6 +228,7 @@ export interface CampaignConfig {
   SHOW_ANNOUNCEMENT_DATE: boolean;
   CAMPAIGN_BADGE: { show: boolean; src: string; alt: string };
   META_PIXEL_ID: string;
+  GTM_ID: string;
   CLINIC_CITY: string;
   CLINIC_DETAILS: {
     legalName: string;

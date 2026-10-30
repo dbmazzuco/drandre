@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
 import { isWhatsappGroupUrlValid, whatsappGroupUrl } from "@/config/rules";
 import { showAdminToast } from "@/lib/adminToast";
-import { trackGroupLinkClick } from "@/lib/metaPixel";
+import { trackGroupLinkClick } from "@/lib/tracking";
 import { WhatsAppIcon } from "./icons";
 
 type Variant = "primary" | "inverse" | "header" | "sticky";
@@ -9,7 +9,7 @@ type Variant = "primary" | "inverse" | "header" | "sticky";
 interface Props {
   label: string;
   variant?: Variant;
-  /** Identifica a posição do botão (atributo data-cta, útil para QA). Não é enviado à Meta. */
+  /** Identifica a posição do botão (atributo data-cta, útil para QA). Não é enviado às ferramentas de marketing. */
   location: string;
   className?: string;
 }

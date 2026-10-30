@@ -34,7 +34,6 @@ declare global {
 let initialized = false;
 let granted = false;
 let pageViewSent = false;
-let lastClickAt = 0;
 
 function injectPixelScript() {
   if (window.fbq) return;
@@ -54,17 +53,6 @@ function injectPixelScript() {
   script.async = true;
   script.src = "https://connect.facebook.net/en_US/fbevents.js";
   document.head.appendChild(script);
-}
-
-function clearMetaCookies() {
-  const parts = window.location.hostname.split(".");
-  const domains = [""];
-  for (let i = 0; i < parts.length - 1; i++) domains.push(`.${parts.slice(i).join(".")}`);
-  for (const name of ["_fbp", "_fbc"]) {
-    for (const domain of domains) {
-      document.cookie = `${name}=; Max-Age=0; path=/${domain ? `; domain=${domain}` : ""}`;
-    }
-  }
 }
 
 export function grantMetaPixel() {
@@ -92,14 +80,9 @@ export function grantMetaPixel() {
 export function revokeMetaPixel() {
   if (initialized && granted) window.fbq?.("consent", "revoke");
   granted = false;
-  clearMetaCookies();
 }
 
-/** Clique em qualquer botão do grupo VIP. Ignora cliques repetidos em menos de 1 s. */
-export function trackGroupLinkClick() {
+export function trackMetaGroupLinkClick() {
   if (!initialized || !granted) return;
-  const now = Date.now();
-  if (now - lastClickAt < 1000) return;
-  lastClickAt = now;
   window.fbq?.("trackCustom", "GroupLinkClick");
 }
