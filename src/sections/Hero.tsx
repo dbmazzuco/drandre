@@ -71,15 +71,18 @@ export function Hero() {
 
         {/* No desktop, a altura da foto acompanha a tela para que todo o hero caiba na primeira dobra. */}
         <figure className="relative mx-auto w-full max-w-[24rem] lg:col-span-5 lg:mr-0 lg:max-w-[min(100%,calc((100svh_-_12rem)*0.8))]">
-          <div aria-hidden="true" className="absolute -right-3 -top-3 bottom-3 left-3 border border-gold/50 sm:-right-4 sm:-top-4 sm:bottom-4 sm:left-4" />
-          <div className="relative aspect-[4/5] overflow-hidden bg-[#3b4141]">
-            <DoctorPhoto
-              photo={photo}
-              sizes={HERO_PHOTO_SIZES}
-              priority
-              className="block h-full w-full"
-              imgClassName="h-full w-full object-cover object-[50%_20%]"
-            />
+          {/* O fio dourado acompanha só a foto, para não cruzar a legenda abaixo. */}
+          <div className="relative">
+            <div aria-hidden="true" className="absolute -right-3 -top-3 bottom-3 left-3 border border-gold/50 sm:-right-4 sm:-top-4 sm:bottom-4 sm:left-4" />
+            <div className="relative aspect-[4/5] overflow-hidden bg-[#3b4141]">
+              <DoctorPhoto
+                photo={photo}
+                sizes={HERO_PHOTO_SIZES}
+                priority
+                className="block h-full w-full"
+                imgClassName="h-full w-full object-cover object-[50%_20%]"
+              />
+            </div>
           </div>
           {badge.show && (
             <img

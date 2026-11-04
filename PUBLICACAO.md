@@ -26,8 +26,11 @@ botão "Ver checklist" do aviso de pré-visualização e como alerta no `npm run
 ## Recomendados
 
 - [x] `DOCTOR_BIO` e `DOCTOR_EDUCATION` com dados verificados (CFM e perfil oficial). Números de atendimentos, tempo
-      de experiência em procedimentos, depoimentos e fotos de antes e depois **não** foram usados: só incluir dados
-      comprovados e após a revisão de conformidade.
+      de experiência em procedimentos e depoimentos **não** foram usados: só incluir dados comprovados e após a
+      revisão de conformidade.
+- [x] **Antes e depois** — 3 casos publicados. A equipe confirmou em 04/11/2026 que as fotos são de pacientes do
+      Dr. André, com autorização por escrito (`RESULTS.consentOnFile`); manter os termos arquivados.
+      Na revisão de conformidade, conferir o texto informativo da seção (`RESULTS.note`) e que as fotos não têm edição.
 - [x] `SITE_URL` com o domínio da Vercel. Trocar se houver domínio próprio e conferir no Depurador de Compartilhamento
       da Meta.
 - [ ] Paleta oficial em `BRAND_COLORS` e `BRAND_COLORS_ARE_OFFICIAL: true`.

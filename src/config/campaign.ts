@@ -133,6 +133,30 @@ export const CAMPAIGN: CampaignConfig = {
   },
 
   // ---------------------------------------------------------------------------
+  //  RESULTADOS (ANTES E DEPOIS)
+  // ---------------------------------------------------------------------------
+  /**
+   * Fotos de antes e depois de PACIENTES DO PRÓPRIO MÉDICO, com autorização de uso
+   * de imagem por escrito (CFM 2.336/2023 e LGPD). Os arquivos originais ficam em
+   * /brand-assets/resultados; `npm run images` gera as versões usadas aqui.
+   * A seção só aparece quando `show` é true e há pelo menos um caso.
+   */
+  RESULTS: {
+    show: true,
+    /** Confirmação de que os termos de autorização dos pacientes estão arquivados. */
+    consentOnFile: true, // confirmado pela equipe em 04/11/2026
+    title: "Resultados de pacientes do Dr. André Menegat",
+    intro:
+      "Imagens de pacientes atendidos pelo Dr. André Menegat, publicadas com autorização. Cada resultado é individual e depende de avaliação médica.",
+    note: "A toxina botulínica atua na contração dos músculos responsáveis pelas linhas de expressão. O efeito é temporário, e a indicação, a resposta ao tratamento, a duração e os possíveis efeitos adversos variam de pessoa para pessoa e são discutidos na consulta.",
+    cases: [
+      { before: "/images/resultados/caso-1-antes.webp", after: "/images/resultados/caso-1-depois.webp", width: 960, height: 540, area: "Região frontal (testa)" },
+      { before: "/images/resultados/caso-2-antes.webp", after: "/images/resultados/caso-2-depois.webp", width: 960, height: 540, area: "Região frontal (testa)" },
+      { before: "/images/resultados/caso-3-antes.webp", after: "/images/resultados/caso-3-depois.webp", width: 960, height: 540, area: "Região frontal (testa)" },
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
   //  MENSURAÇÃO
   // ---------------------------------------------------------------------------
   /**
@@ -205,6 +229,18 @@ export interface Photo {
   alt: string;
 }
 
+export interface ResultCase {
+  /** Caminhos das imagens geradas em /public/images/resultados. */
+  before: string;
+  after: string;
+  width: number;
+  height: number;
+  /** Região tratada, ex.: "Região frontal (testa)". */
+  area: string;
+  /** Intervalo entre as fotos, se informado. Ex.: "15 dias após a aplicação". */
+  interval?: string;
+}
+
 export interface CampaignConfig {
   DOCTOR_NAME: string;
   DOCTOR_CRM: string;
@@ -228,6 +264,14 @@ export interface CampaignConfig {
   OFFER_ANNOUNCEMENT_TIME: string;
   SHOW_ANNOUNCEMENT_DATE: boolean;
   CAMPAIGN_BADGE: { show: boolean; src: string; alt: string };
+  RESULTS: {
+    show: boolean;
+    consentOnFile: boolean;
+    title: string;
+    intro: string;
+    note: string;
+    cases: ResultCase[];
+  };
   META_PIXEL_ID: string;
   GTM_ID: string;
   CLINIC_CITY: string;

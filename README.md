@@ -43,6 +43,7 @@ o conteúdo e o item aparece no checklist.
 | `OFFER_ANNOUNCEMENT_DATE` / `_TIME` | Data (`AAAA-MM-DD`) e horário (`HH:MM`) da divulgação. |
 | `SHOW_ANNOUNCEMENT_DATE` | Controle de exibição: a data só aparece quando `true` (divulgação autorizada). |
 | `CAMPAIGN_BADGE` | Selo circular sobre a foto do hero (`show: false` para ocultar). |
+| `RESULTS` | Seção de antes e depois (pacientes do próprio médico, com autorização). Ver abaixo. |
 | `META_PIXEL_ID` | ID do Pixel (15–16 dígitos), se o Pixel for instalado direto na página. |
 | `GTM_ID` | ID do contêiner do Google Tag Manager (`GTM-XXXXXXX`). |
 | `CLINIC_CITY`, `CLINIC_DETAILS` | Dados da clínica e do diretor técnico, se a divulgação também for em nome da clínica. |
@@ -71,6 +72,17 @@ npm run images
 
 O script gera em `public/images/` as versões AVIF/WebP responsivas da foto, os logotipos, o monograma, o selo, os ícones
 (favicon) e a imagem de compartilhamento `og-image.jpg` (1200×630).
+
+### Antes e depois
+
+1. Salve cada montagem (antes e depois na mesma imagem) em `brand-assets/resultados/` como `caso-1`, `caso-2`…
+   (`.jpg`, `.png` ou `.webp`).
+2. Em `scripts/process-images.mjs` (`RESULT_CASES`), informe se cada montagem é `vertical` (antes em cima) ou
+   `horizontal` (antes à esquerda), a região tratada e, se houver rótulos gravados na foto, quanto cortar do topo.
+3. Rode `npm run images` e cole em `RESULTS.cases` as linhas que o script imprime.
+
+As duas metades de cada caso recebem exatamente o mesmo recorte (16:9), sem retoque. A seção só aparece
+com pelo menos um caso e exige `RESULTS.consentOnFile: true`.
 
 ## Botões do WhatsApp
 

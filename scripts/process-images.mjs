@@ -7,7 +7,7 @@
  * (mantendo o nome) e rode o comando novamente. Os arquivos gerados vão para /public/images.
  */
 import sharp from "sharp";
-import { mkdir } from "node:fs/promises";
+import { mkdir, readdir } from "node:fs/promises";
 
 const SRC = "brand-assets";
 const OUT = "public/images";
@@ -136,8 +136,71 @@ async function ogImage() {
   console.log("og-image: ok");
 }
 
+/**
+ * Antes e depois: cada arquivo em /brand-assets/resultados é uma montagem com as duas
+ * fotos (uma sobre a outra ou lado a lado). O script separa as metades e recorta as duas
+ * do MESMO jeito (16:9), sem retoque. `trimTop` remove do topo de cada
+ * metade a mesma faixa (em pixels), por exemplo para tirar rótulos já gravados na foto.
+ * `split` é a posição da emenda (fração da altura ou da largura); `position`, o alinhamento
+ * do recorte. Nomes aceitos: "caso-1", "caso 1", "caso_1"…
+ */
+const RESULT_CASES = [
+  // Emenda na linha 502; rótulos "Antes/Depois" gravados no canto superior de cada metade.
+  { file: "caso-1", layout: "vertical", split: 502 / 979, trimTop: 100, position: "centre", area: "Região frontal (testa)" },
+  // Duas fotos de 660 px lado a lado; alinhado por baixo para manter as sobrancelhas.
+  { file: "caso-2", layout: "horizontal", split: 0.5, trimTop: 0, position: "south", area: "Região frontal (testa)" },
+  // Emenda na linha 487.
+  { file: "caso-3", layout: "vertical", split: 487 / 993, trimTop: 0, position: "centre", area: "Região frontal (testa)" },
+];
+
+async function results() {
+  const dir = `${SRC}/resultados`;
+  const files = await readdir(dir).catch(() => []);
+  const ready = [];
+  await mkdir(`${OUT}/resultados`, { recursive: true });
+
+  for (const item of RESULT_CASES) {
+    const name = files.find((f) => f.replace(/\.(jpe?g|png|webp)$/i, "").replace(/[\s_]+/g, "-").toLowerCase() === item.file);
+    if (!name) continue;
+    const input = `${dir}/${name}`;
+    const { width, height } = await sharp(input).metadata();
+    const halves =
+      item.layout === "vertical"
+        ? [
+            { left: 0, top: 0, width, height: Math.round(height * item.split) },
+            { left: 0, top: Math.round(height * item.split), width, height: height - Math.round(height * item.split) },
+          ]
+        : [
+            { left: 0, top: 0, width: Math.round(width * item.split), height },
+            { left: Math.round(width * item.split), top: 0, width: width - Math.round(width * item.split), height },
+          ];
+
+    for (const [i, half] of halves.entries()) {
+      const region = { ...half, top: half.top + item.trimTop, height: half.height - item.trimTop };
+      await sharp(input)
+        .extract(region)
+        .resize({ width: 960, height: 540, fit: "cover", position: item.position })
+        .webp({ quality: 82 })
+        .toFile(`${OUT}/resultados/${item.file}-${i === 0 ? "antes" : "depois"}.webp`);
+    }
+    ready.push(item);
+  }
+
+  if (ready.length === 0) {
+    console.log("resultados: nenhum arquivo em brand-assets/resultados");
+    return;
+  }
+  console.log("resultados: ok — cole em RESULTS.cases (src/config/campaign.ts):");
+  for (const item of ready) {
+    console.log(
+      `  { before: "/images/resultados/${item.file}-antes.webp", after: "/images/resultados/${item.file}-depois.webp", width: 960, height: 540, area: "${item.area}" },`,
+    );
+  }
+}
+
 await doctorPhoto();
 await logos();
 await campaignBadge();
 await icons();
 await ogImage();
+await results();

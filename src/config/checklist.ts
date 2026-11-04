@@ -31,6 +31,7 @@ export function getPublishChecklist(): ChecklistItem[] {
   const clinic = c.CLINIC_DETAILS;
   const clinicStarted = filled(clinic.legalName) || filled(clinic.cnpj);
   const dateFilled = filled(c.OFFER_ANNOUNCEMENT_DATE);
+  const showResults = c.RESULTS.show && c.RESULTS.cases.length > 0;
 
   const items: ChecklistItem[] = [
     {
@@ -111,6 +112,7 @@ export function getPublishChecklist(): ChecklistItem[] {
       hint: [
         c.CAMPAIGN_BADGE.show && "Inclui validar o uso do selo “Black Friday” na fotografia do hero.",
         isGtmIdValid && "Revise as tags do contêiner do GTM: consentimento, nenhum dado de saúde e sem Pixel duplicado.",
+        showResults && "Inclui a seção de antes e depois: legendas, texto informativo e ausência de edição nas fotos.",
       ]
         .filter(Boolean)
         .join(" ") || undefined,
@@ -144,6 +146,17 @@ export function getPublishChecklist(): ChecklistItem[] {
           : "Enquanto vazia, a página informa que a data será anunciada pela equipe.",
     },
   ];
+
+  if (showResults) {
+    items.push({
+      id: "results-consent",
+      label: "Autorização de uso de imagem dos pacientes do antes e depois",
+      field: "RESULTS.consentOnFile",
+      level: "blocker",
+      done: c.RESULTS.consentOnFile,
+      hint: "Fotos só de pacientes do próprio médico, com termo assinado e arquivado.",
+    });
+  }
 
   if (isMetaPixelIdValid && isGtmIdValid) {
     items.push({

@@ -7,8 +7,9 @@ import { Footer } from "@/sections/Footer";
 import { Header } from "@/sections/Header";
 import { Hero } from "@/sections/Hero";
 import { HowItWorks } from "@/sections/HowItWorks";
+import { Results } from "@/sections/Results";
 
-/** Jornada: Atenção (Hero) → Interesse (Benefícios) → Confiança (Médico) → Clareza (Como funciona, FAQ) → Ação (CTA final). */
+/** Jornada: Atenção (Hero) → Interesse (Benefícios) → Confiança (Médico, Resultados) → Clareza (Como funciona, FAQ) → Ação (CTA final). */
 export function Index() {
   return (
     <>
@@ -17,6 +18,7 @@ export function Index() {
         <Hero />
         <Benefits />
         <About />
+        <Results />
         <HowItWorks />
         <Faq />
         <FinalCta />
