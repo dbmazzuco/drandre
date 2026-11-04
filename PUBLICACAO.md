@@ -13,15 +13,15 @@ botão "Ver checklist" do aviso de pré-visualização e como alerta no `npm run
       campanha. Não usar "especialista em minilipo" ou "em contorno corporal": não são especialidades registradas.
 - [x] **Mensuração** — Google Tag Manager `GTM-K94HHX9M` configurado. Falta revisar as tags do contêiner e validar no
       modo Visualizar (ver README).
-- [ ] **Política de Privacidade** — controlador preenchido (Clínica Médica Pieri e Menegat Ltda). Falta o **e-mail de
-      contato** para os titulares (`PRIVACY.contactEmail`), a revisão jurídica e `PRIVACY.legallyReviewed: true`.
+- [x] **Política de Privacidade** — controlador, e-mail de contato e encarregado preenchidos; revisão jurídica
+      confirmada pela equipe em 04/11/2026 (`PRIVACY.legallyReviewed: true`).
 - [ ] **Clínica** — a página está em nome do médico, então `CLINIC_DETAILS` ficou vazio. Se a divulgação também for em
       nome da clínica, preencher razão social, CNPJ, inscrição no CRM e diretor técnico. Atenção: em 30/10/2026 o
       cadastro da clínica no CRM-SC (nº 6042) aparecia com outro nome ("Clínica Médica Corrêa e Menegat Ltda"), outro
       diretor técnico e certificado de regularidade vencido desde 24/06/2020 — regularizar antes de usar o nome da
       clínica em anúncios.
-- [ ] **Revisão de conformidade** — revisão final pelo responsável pela campanha (Resolução CFM nº 2.336/2023, LGPD e
-      políticas de publicidade da Meta) e `COMPLIANCE_REVIEWED: true`.
+- [x] **Revisão de conformidade** — revisão final (Resolução CFM nº 2.336/2023, LGPD e políticas de publicidade da
+      Meta) confirmada pela equipe em 04/11/2026 (`COMPLIANCE_REVIEWED: true`).
 
 ## Recomendados
 

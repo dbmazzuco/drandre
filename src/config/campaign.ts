@@ -207,14 +207,14 @@ export const CAMPAIGN: CampaignConfig = {
     dpoContact: "", // vazio = atende pelo e-mail de contato acima
     lastUpdated: "2026-10-30", // "AAAA-MM-DD"
     /** Marque true somente após revisão jurídica do texto da política. */
-    legallyReviewed: false,
+    legallyReviewed: true, // revisão confirmada pela equipe em 04/11/2026
   },
 
   /**
    * Marque true somente após a revisão final de conformidade (CFM, LGPD e
    * políticas da Meta) feita pelo responsável pela campanha.
    */
-  COMPLIANCE_REVIEWED: false,
+  COMPLIANCE_REVIEWED: true, // revisão confirmada pela equipe em 04/11/2026
 };
 
 // ---------------------------------------------------------------------------
