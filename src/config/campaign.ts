@@ -127,8 +127,9 @@ export const CAMPAIGN: CampaignConfig = {
    */
   CAMPAIGN_BADGE: {
     show: true,
-    src: "/images/selo-grupo-vip.webp",
-    alt: "Selo Black Friday Exclusive — Grupo VIP Dr. André Menegat",
+    // Versões: selo-grupo-vip-claro.webp ou selo-grupo-vip-escuro.webp (geradas por `npm run images`).
+    src: "/images/selo-grupo-vip-claro.webp",
+    alt: "Selo Black Friday — Grupo VIP Dr. André Menegat",
   },
 
   // ---------------------------------------------------------------------------

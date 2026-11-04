@@ -62,18 +62,20 @@ async function logos() {
   console.log("logos: ok");
 }
 
-/** Selo circular da campanha: recorte em círculo sobre fundo transparente. */
+/**
+ * Selo circular da campanha, recortado em círculo da foto do grupo do WhatsApp
+ * (materiais/grupo-whatsapp, gerada por scripts/group-avatar.mjs). Gera as duas versões.
+ */
 async function campaignBadge() {
-  const input = `${SRC}/selo-black-friday-grupo-vip.jpg`;
-  const { width } = await sharp(input).metadata();
-  const r = Math.round(width / 2) - 14;
-  const c = Math.round(width / 2) - 5;
-  const mask = Buffer.from(
-    `<svg width="${width}" height="${width}"><circle cx="${c}" cy="${c}" r="${r}" fill="#fff"/></svg>`,
-  );
-  const masked = await sharp(input).ensureAlpha().composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
-  const cut = await sharp(masked).extract({ left: c - r, top: c - r, width: r * 2, height: r * 2 }).png().toBuffer();
-  await sharp(cut).resize({ width: 360 }).webp({ quality: 85 }).toFile(`${OUT}/selo-grupo-vip.webp`);
+  for (const variant of ["claro", "escuro"]) {
+    const input = `materiais/grupo-whatsapp/foto-grupo-black-friday-${variant}.png`;
+    const { width } = await sharp(input).metadata();
+    const mask = Buffer.from(
+      `<svg width="${width}" height="${width}"><circle cx="${width / 2}" cy="${width / 2}" r="${width / 2}" fill="#fff"/></svg>`,
+    );
+    const cut = await sharp(input).ensureAlpha().composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
+    await sharp(cut).resize({ width: 360 }).webp({ quality: 88 }).toFile(`${OUT}/selo-grupo-vip-${variant}.webp`);
+  }
   console.log("selo: ok");
 }
 
